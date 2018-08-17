@@ -1,0 +1,38 @@
+module github.com/openshift/installer
+
+require (
+	github.com/PuerkitoBio/purell v0.0.0-20160728015603-8a290539e2e8
+	github.com/PuerkitoBio/urlesc v0.0.0-20160726150825-5bd2802263f2
+	github.com/Sirupsen/logrus v0.0.0-20160416082137-081307d9bc13
+	github.com/ajeddeloh/go-json v0.0.0-20160803184958-73d058cf8437
+	github.com/alecthomas/template v0.0.0-20160405071501-a0175ee3bccc
+	github.com/alecthomas/units v0.0.0-20151022065526-2efee857e7cf
+	github.com/apparentlymart/go-cidr v0.0.0-20170616213631-2bd8b58cf427
+	github.com/coreos/go-semver v0.0.0-20160503005744-294930c1e79c
+	github.com/coreos/go-systemd v0.0.0-20180511133405-39ca1b05acc7
+	github.com/coreos/ignition v0.0.0-20180612195728-76107251acd1
+	github.com/coreos/tectonic-config v0.0.0-20180606202525-0d649ebfd355
+	github.com/dgrijalva/jwt-go v0.0.0-20180308231308-06ea1031745c
+	github.com/emicklei/go-restful v0.0.0-20170410110728-ff4f55a20633
+	github.com/ghodss/yaml v0.0.0-20150909031657-73d445a93680
+	github.com/go-openapi/jsonpointer v0.0.0-20160704185906-46af16f9f7b1
+	github.com/go-openapi/jsonreference v0.0.0-20160704190145-13c6e3589ad9
+	github.com/go-openapi/spec v0.0.0-20170914061247-7abd5745472f
+	github.com/go-openapi/swag v0.0.0-20170606142751-f3f9494671f9
+	github.com/gogo/protobuf v0.0.0-20170330071051-c0656edd0d9e
+	github.com/golang/glog v0.0.0-20141105023935-44145f04b68c
+	github.com/google/gofuzz v0.0.0-20161122191042-44d81051d367
+	github.com/mailru/easyjson v0.0.0-20170624190925-2f5df55504eb
+	github.com/spf13/pflag v0.0.0-20170508184408-e57e3eeb33f7
+	github.com/vincent-petithory/dataurl v0.0.0-20160330182126-9a301d65acbb
+	go4.org v0.0.0-20160314031811-03efcb870d84
+	golang.org/x/crypto v0.0.0-20180602220124-df8d4716b347
+	golang.org/x/net v0.0.0-20170809000501-1c05540f6879
+	golang.org/x/sys v0.0.0-20180606202747-9527bec2660b
+	golang.org/x/text v0.0.0-20170810154203-b19bf474d317
+	gopkg.in/alecthomas/kingpin.v2 v2.0.0-20171217180838-947dcec5ba9c
+	gopkg.in/inf.v0 v0.0.0-20150911125757-3887ee99ecf0
+	gopkg.in/yaml.v2 v2.0.0-20150924142314-53feefa2559f
+	k8s.io/apimachinery v0.0.0-20171207040834-180eddb345a5
+	k8s.io/kube-openapi v0.0.0-20171101183504-39a7bf85c140
+)
