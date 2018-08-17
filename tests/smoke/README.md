@@ -9,7 +9,6 @@ smoke/
 ├── aws        # Smoke tests for AWS
 │   └── vars   # Terraform tfvars files for AWS smoke tests
 ├── *_test.go  # Smoke tests for all platforms
-├── vendor     # Smoke test dependencies
 └── ...
 ```
 

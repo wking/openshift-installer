@@ -2,7 +2,6 @@
 if [ "$IS_CONTAINER" != "" ]; then
   TOP_DIR="${1:-.}"
   find "${TOP_DIR}" \
-    -path "${TOP_DIR}/vendor" -prune \
     -o -path "${TOP_DIR}/.build" -prune \
     -o -type f -name '*.sh' -exec shellcheck --format=gcc {} \+
 else
