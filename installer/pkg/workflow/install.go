@@ -6,6 +6,7 @@ import (
 	"path/filepath"
 
 	"github.com/openshift/installer/installer/pkg/config-generator"
+	"github.com/openshift/installer/pkg/terraform"
 )
 
 // InstallWorkflow creates new instances of the 'install' workflow,
@@ -35,7 +36,7 @@ func installInfraStep(m *metadata) error {
 }
 
 func installBootstrapStep(m *metadata) error {
-	if !hasStateFile(m.clusterDir, bootstrapStep) {
+	if !terraform.HasStateFile(m.clusterDir, bootstrapStep) {
 		return runInstallStep(m, bootstrapStep)
 	}
 	return nil
@@ -46,10 +47,10 @@ func runInstallStep(m *metadata, step string, extraArgs ...string) error {
 	if err != nil {
 		return err
 	}
-	if err := tfInit(m.clusterDir, templateDir); err != nil {
+	if err := terraform.Init(m.clusterDir, templateDir); err != nil {
 		return err
 	}
-	return tfApply(m.clusterDir, step, templateDir, extraArgs...)
+	return terraform.Apply(m.clusterDir, step, templateDir, extraArgs...)
 }
 
 func generateIgnConfigStep(m *metadata) error {
