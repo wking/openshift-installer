@@ -10,11 +10,14 @@ import (
 type Stock interface {
 	// TFVars is the asset that generates the terraform.tfvar file
 	TFVars() asset.Asset
+	// Cluster is the asset that creates the cluster.
+	Cluster() asset.Asset
 }
 
 // StockImpl is the implementation of the cluster asset stock.
 type StockImpl struct {
-	tfvars asset.Asset
+	tfvars  asset.Asset
+	cluster asset.Asset
 }
 
 var _ Stock = (*StockImpl)(nil)
@@ -28,7 +31,15 @@ func (s *StockImpl) EstablishStock(rootDir string, installConfigStock installcon
 		masterIgnition:    ignitionStock.MasterIgnition(),
 		workerIgnition:    ignitionStock.WorkerIgnition(),
 	}
+
+	s.cluster = &Cluster{
+		rootDir: rootDir,
+		tfvars:  s.tfvars,
+	}
 }
 
 // TFVars returns the terraform tfvar asset.
 func (s *StockImpl) TFVars() asset.Asset { return s.tfvars }
+
+// Cluster returns the cluster asset.
+func (s *StockImpl) Cluster() asset.Asset { return s.cluster }
