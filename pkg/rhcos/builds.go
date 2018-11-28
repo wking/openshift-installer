@@ -11,9 +11,13 @@ import (
 	"github.com/sirupsen/logrus"
 )
 
-const (
+var (
 	// DefaultChannel is the default RHCOS channel for the cluster.
 	DefaultChannel = "maipo"
+
+	// buildName is the name of the build in the channel that will be picked up
+	// empty string means the first one in the build list (latest) will be used
+	buildName = ""
 
 	baseURL = "https://releases-rhcos.svc.ci.openshift.org/storage/releases"
 )
@@ -102,6 +106,15 @@ func fetchLatestBuild(ctx context.Context, channel string) (string, error) {
 
 	if len(builds.Builds) == 0 {
 		return "", errors.Errorf("no builds found")
+	}
+
+	if buildName != "" {
+		for _, build := range builds.Builds {
+			if build == buildName {
+				return buildName, nil
+			}
+		}
+		return "", errors.Errorf("no build with name '%s' found at '%s'. Available builds are: %v", buildName, url, builds.Builds)
 	}
 
 	return builds.Builds[0], nil
