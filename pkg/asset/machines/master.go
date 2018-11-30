@@ -66,7 +66,7 @@ func (m *Master) Generate(dependencies asset.Parents) error {
 		if mpool.AMIID == "" {
 			ctx, cancel := context.WithTimeout(context.TODO(), 60*time.Second)
 			defer cancel()
-			ami, err := rhcos.AMI(ctx, rhcos.DefaultChannel, ic.Platform.AWS.Region)
+			ami, err := rhcos.AMI(ctx, rhcos.DefaultChannel, rhcos.DefaultBuild, ic.Platform.AWS.Region)
 			if err != nil {
 				return errors.Wrap(err, "failed to determine default AMI")
 			}

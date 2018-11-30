@@ -84,7 +84,7 @@ func TFVars(cfg *types.InstallConfig, bootstrapIgn, masterIgn string) ([]byte, e
 	if cfg.Platform.AWS != nil {
 		ctx, cancel := context.WithTimeout(context.TODO(), 30*time.Second)
 		defer cancel()
-		ami, err := rhcos.AMI(ctx, rhcos.DefaultChannel, cfg.Platform.AWS.Region)
+		ami, err := rhcos.AMI(ctx, rhcos.DefaultChannel, rhcos.DefaultBuild, cfg.Platform.AWS.Region)
 		if err != nil {
 			return nil, errors.Wrap(err, "failed to determine default AMI")
 		}

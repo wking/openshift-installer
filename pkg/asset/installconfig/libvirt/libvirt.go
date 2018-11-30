@@ -45,7 +45,7 @@ func Platform() (*libvirt.Platform, error) {
 			return nil, errors.Wrap(err, "resolve OPENSHIFT_INSTALL_LIBVIRT_IMAGE")
 		}
 	} else {
-		qcowImage, err = rhcos.QEMU(context.TODO(), rhcos.DefaultChannel)
+		qcowImage, err = rhcos.QEMU(context.TODO(), rhcos.DefaultChannel, rhcos.DefaultBuild)
 		if err != nil {
 			return nil, errors.Wrap(err, "failed to fetch QEMU image URL")
 		}

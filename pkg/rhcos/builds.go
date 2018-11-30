@@ -15,9 +15,11 @@ var (
 	// DefaultChannel is the default RHCOS channel for the cluster.
 	DefaultChannel = "maipo"
 
-	// buildName is the name of the build in the channel that will be picked up
-	// empty string means the first one in the build list (latest) will be used
-	buildName = ""
+	// DefaultBuild is the default RHCOS build number (e.g. 47.153).
+	// This will generally only be set for released installers, in
+	// development it will be an empty string for "use the latest build in
+	// the given channel".
+	DefaultBuild = ""
 
 	baseURL = "https://releases-rhcos.svc.ci.openshift.org/storage/releases"
 )
@@ -36,10 +38,15 @@ type metadata struct {
 	OSTreeVersion string `json:"ostree-version"`
 }
 
-func fetchLatestMetadata(ctx context.Context, channel string) (metadata, error) {
-	build, err := fetchLatestBuild(ctx, channel)
-	if err != nil {
-		return metadata{}, errors.Wrap(err, "failed to fetch latest build")
+func fetchMetadata(ctx context.Context, channel string, build string) (metadata, error) {
+	var err error
+	autoBuild := false
+	if build == "" {
+		autoBuild = true
+		build, err = fetchLatestBuild(ctx, channel)
+		if err != nil {
+			return metadata{}, errors.Wrap(err, "failed to fetch latest build")
+		}
 	}
 
 	url := fmt.Sprintf("%s/%s/%s/meta.json", baseURL, channel, build)
@@ -57,7 +64,10 @@ func fetchLatestMetadata(ctx context.Context, channel string) (metadata, error) 
 	defer resp.Body.Close()
 
 	if resp.StatusCode != http.StatusOK {
-		return metadata{}, errors.Errorf("incorrect HTTP response (%s)", resp.Status)
+		if !autoBuild {
+			// potentially suggest other build values here
+		}
+		return metadata{}, errors.Errorf("HTTP error %s for %s", url, resp.Status)
 	}
 
 	body, err := ioutil.ReadAll(resp.Body)
@@ -106,15 +116,6 @@ func fetchLatestBuild(ctx context.Context, channel string) (string, error) {
 
 	if len(builds.Builds) == 0 {
 		return "", errors.Errorf("no builds found")
-	}
-
-	if buildName != "" {
-		for _, build := range builds.Builds {
-			if build == buildName {
-				return buildName, nil
-			}
-		}
-		return "", errors.Errorf("no build with name '%s' found at '%s'. Available builds are: %v", buildName, url, builds.Builds)
 	}
 
 	return builds.Builds[0], nil
