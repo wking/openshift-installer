@@ -67,10 +67,7 @@ limit to satisfy the need. If not, please ask AWS to increase the limit via a su
 
 By default, each cluster will create 2 network load balancers for the master API server (1 internal, 1 external) and a
 single classic elastic load balancer for the router. Additional Kubernetes LoadBalancer Service objects will create
-additional load balancers.
-
-[AWS Load Balancing][load-balancing]
-
+additional [load balancers][load-balancing]
 
 [service-limits]: https://docs.aws.amazon.com/general/latest/gr/aws_service_limits.html
 [load-balancing]: https://aws.amazon.com/elasticloadbalancing/

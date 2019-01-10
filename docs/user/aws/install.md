@@ -7,7 +7,7 @@ Step 3: Download the Installer.
 
 ### Create Configuration
 
-```
+```console
 [~]$ openshift-install-linux-amd64 create install-config
 ? SSH Public Key /home/user_id/.ssh/id_rsa.pub
 ? Platform aws
@@ -19,7 +19,7 @@ Step 3: Download the Installer.
 
 ### Create Cluster
 
-```
+```console
 [~]$ openshift-install-linux-amd64 create cluster
 INFO Waiting up to 30m0s for the Kubernetes API...
 INFO API v1.11.0+85a0623 up
@@ -39,11 +39,9 @@ In Route53, there will be a new, private hosted zone (for internal lookups):
 
 ![Route53 private hosted zone](images/install_private_hosted_zone.png)
 
-
 In EC2, there will be 6 running instances:
 
 ![EC2 instances after install](images/install_nodes.png)
-
 
 The relationship of the EC2 instances, elastic load balancers (ELBs) and Route53 hosted zones is as depicted:
 

@@ -14,8 +14,8 @@ Follow along with the steps and links below to configure your AWS cluster:
 
 ## Reporting Issues
 
-Please see the [Issue Tracker][issues_aws] for current known issues.
+Please see the [Issue Tracker][issues] for current known issues.
 Please report a new issue if you do not find an issue related to any trouble
 you're having.
 
-[issues_aws]: https://github.com/openshift/installer/issues?utf8=%E2%9C%93&q=is%3Aissue+is%3Aopen+aws
+[issues]: https://github.com/openshift/installer/issues?utf8=%E2%9C%93&q=is%3Aissue+is%3Aopen+aws

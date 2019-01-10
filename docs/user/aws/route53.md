@@ -3,8 +3,8 @@
 Amazon's Route53 service is used by the OpenShift installer to configure cluster DNS resolution and provide name lookup
 for the cluster to the outside world. To use OpenShift, you must have created a public hosted zone in Amazon Route53 in
 the same account as your OpenShift cluster. You must also ensure the zone is "authoritative" for the domain. There are
-two ways to do this outlined below: root domain and subdomain. A root domain is "openshiftcorp.com". A subdomain is of
-the form "clusters.openshiftcorp.com".
+two ways to do this outlined below: root domain and subdomain. A root domain is `openshiftcorp.com`. A subdomain is of
+the form `clusters.openshiftcorp.com`.
 
 The below sections identify how to ensure your hosted zone is authoritative for a domain.
 
@@ -30,8 +30,8 @@ Whether using a root domain or a subdomain, you must create a public, hosted zon
 
 [AWS: Creating a Public Hosted Zone][create-hosted-zone]
 
-To use the root domain, you'd create the hosted zone with the value "openshiftcorp.com". To use a subdomain, you'd
-create a hosted zone with the value "clusters.openshiftcorp.com". (Use appropriate domain values for your situation.)
+To use the root domain, you'd create the hosted zone with the value `openshiftcorp.com`. To use a subdomain, you'd
+create a hosted zone with the value `clusters.openshiftcorp.com`. (Use appropriate domain values for your situation.)
 
 ### Example: Root Domain
 
@@ -39,7 +39,7 @@ create a hosted zone with the value "clusters.openshiftcorp.com". (Use appropria
 
 ## Step 3: Get Public Nameservers of Hosted Zone
 
-For either a root domain "openshiftcorp.com" or a subdomain "clusters.openshiftcorp.com", you must extract the new
+For either a root domain `openshiftcorp.com` or a subdomain `clusters.openshiftcorp.com`, you must extract the new
 authoritative nameservers from the hosted zone records.
 
 [AWS: Getting the Name Servers for a Public Hosted Zone][get-hosted-zone-info]
@@ -68,14 +68,14 @@ If you are migrating your root domain to Route53, care should be taken to migrat
 
 ## Step 4b: Subdomain - Perform DNS Delegation
 
-For a subdomain of openshiftcorp.com (e.g. clusters.openshiftcorp.com), you must add delegation records to the
+For a subdomain of `openshiftcorp.com` (e.g. `clusters.openshiftcorp.com`), you must add delegation records to the
 parent/root domain. This may require a request to your company's IT department or the division which controls the root
 domain and DNS services for your company.
 
 ### Example: BIND
 
-Delegation records in the root domain for openshiftcorp.com to AWS Route53 for the subdomain of
-clusters.openshiftcorp.com would take the following form:
+Delegation records in the root domain for `openshiftcorp.com` to AWS Route53 for the subdomain of
+`clusters.openshiftcorp.com` would take the following form:
 
 ```
 $ORIGIN clusters.openshiftcorp.com.
@@ -88,14 +88,14 @@ $ORIGIN clusters.openshiftcorp.com.
 ### Example: Route53
 
 Following our previous example, if using entirely AWS Route 53 for the registrar, root domain and subdomain, the root
-domain (openshiftcorp.com) hosted zone would look like the following:
+domain (`openshiftcorp.com`) hosted zone would look like the following:
 
 ![Subdomain delegation for hosted zone in Route53](images/route53_hosted_zone_delegation.png)
 
 The root domain would contain the authoritative information for the root domain and also identify a separate set of
 nameservers for the subdomain (the nameservers for a separate Hosted Zone in Route53)
 
-The hosted zone of the subdomain (clusters.openshiftcorp.com) would show:
+The hosted zone of the subdomain (`clusters.openshiftcorp.com`) would show:
 
 ![Subdomain hosted zone in Route53](images/route53_hosted_zone_subdomain.png)
 
