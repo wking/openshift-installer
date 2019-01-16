@@ -67,6 +67,7 @@ func (m *Master) Generate(dependencies asset.Parents) error {
 	switch ic.Platform.Name() {
 	case awstypes.Name:
 		mpool := defaultAWSMachinePoolPlatform()
+		mpool.InstanceType = "m4.xlarge"
 		mpool.Set(ic.Platform.AWS.DefaultMachinePlatform)
 		mpool.Set(pool.Platform.AWS)
 		if len(mpool.Zones) == 0 {
@@ -81,7 +82,7 @@ func (m *Master) Generate(dependencies asset.Parents) error {
 		if err != nil {
 			return errors.Wrap(err, "failed to create master machine objects")
 		}
-		aws.ConfigMasters(machines, ic.ObjectMeta.Name)
+		aws.ConfigMasters(machines, ic.ObjectMeta.Name, mpool.InstanceType)
 
 		list := listFromMachines(machines)
 		raw, err := yaml.Marshal(list)

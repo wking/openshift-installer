@@ -120,10 +120,12 @@ func tagsFromUserTags(clusterID, clusterName string, usertags map[string]string)
 	return tags, nil
 }
 
-// ConfigMasters sets the PublicIP flag and assigns a set of load balancers to the given machines
-func ConfigMasters(machines []clusterapi.Machine, clusterName string) {
+// ConfigMasters sets the PublicIP flag, bumps the instance type, and
+// assigns a set of load balancers to the given machines
+func ConfigMasters(machines []clusterapi.Machine, clusterName string, instanceType string) {
 	for _, machine := range machines {
 		providerSpec := machine.Spec.ProviderSpec.Value.Object.(*awsprovider.AWSMachineProviderConfig)
+		providerSpec.InstanceType = instanceType
 		providerSpec.PublicIP = pointer.BoolPtr(true)
 		providerSpec.LoadBalancers = []awsprovider.LoadBalancerReference{
 			{
