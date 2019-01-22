@@ -51,20 +51,20 @@ func TestClusterName(t *testing.T) {
 
 func TestSubnetCIDR(t *testing.T) {
 	cases := []struct {
-		cidr  string
-		valid string
+		cidr          string
+		expectedError string
 	}{
-		{"0.0.0.0/32", "address must be specified"},
-		{"1.2.3.4/0", "invalid network address. got 1.2.3.4/0, expecting 0.0.0.0/0"},
-		{"1.2.3.4/1", "invalid network address. got 1.2.3.4/1, expecting 0.0.0.0/1"},
-		{"1.2.3.4/31", "blah"},
-		{"1.2.3.4/32", "blah"},
-		{"0:0:0:0:0:1:102:304/116", "must use IPv4"},
-		{"0:0:0:0:0:ffff:102:304/116", "invalid network address. got 1.2.3.4/20, expecting 1.2.0.0/20"},
-		{"172.17.0.0/20", "overlaps with default Docker Bridge subnet (172.17.0.0/20)"},
-		{"172.0.0.0/8", "overlaps with default Docker Bridge subnet (172.0.0.0/8)"},
-		{"255.255.255.255/1", "invalid network address. got 255.255.255.255/1, expecting 128.0.0.0/1"},
-		{"255.255.255.255/32", "blah"},
+		{cidr: "0.0.0.0/32", expectedError: "address must be specified"},
+		{cidr: "1.2.3.4/0", expectedError: "invalid network address. got 1.2.3.4/0, expecting 0.0.0.0/0"},
+		{cidr: "1.2.3.4/1", expectedError: "invalid network address. got 1.2.3.4/1, expecting 0.0.0.0/1"},
+		{cidr: "1.2.3.4/31"},
+		{cidr: "1.2.3.4/32"},
+		{cidr: "0:0:0:0:0:1:102:304/116", expectedError: "must use IPv4"},
+		{cidr: "0:0:0:0:0:ffff:102:304/116", expectedError: "invalid network address. got 1.2.3.4/20, expecting 1.2.0.0/20"},
+		{cidr: "172.17.0.0/20", expectedError: "overlaps with default Docker Bridge subnet (172.17.0.0/20)"},
+		{cidr: "172.0.0.0/8", expectedError: "overlaps with default Docker Bridge subnet (172.0.0.0/8)"},
+		{cidr: "255.255.255.255/1", expectedError: "invalid network address. got 255.255.255.255/1, expecting 128.0.0.0/1"},
+		{cidr: "255.255.255.255/32"},
 	}
 	for _, tc := range cases {
 		t.Run(tc.cidr, func(t *testing.T) {
@@ -73,10 +73,10 @@ func TestSubnetCIDR(t *testing.T) {
 				t.Fatalf("could not parse cidr: %v", err)
 			}
 			err = SubnetCIDR(&net.IPNet{IP: ip, Mask: cidr.Mask})
-			if err != nil {
-				assert.EqualError(t, err, tc.valid)
-			} else {
+			if tc.expectedError == "" {
 				assert.NoError(t, err)
+			} else {
+				assert.EqualError(t, err, tc.expectedError)
 			}
 		})
 	}
