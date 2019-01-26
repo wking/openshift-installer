@@ -29,7 +29,31 @@ type Master struct {
 	UserDataSecretRaw []byte
 }
 
-var _ asset.Asset = (*Master)(nil)
+var (
+	_ asset.Asset = (*Master)(nil)
+
+	defaultMachineClass = map[string]string{
+		"ap-northeast-1": "m4",
+		"ap-northeast-2": "m4",
+		"ap-northeast-3": "m4",
+		"ap-south-1":     "m4",
+		"ap-southeast-1": "m4",
+		"ap-southeast-2": "m4",
+		"ca-central-1":   "m4",
+		"eu-central-1":   "m4",
+		"eu-north-1":     "m5",
+		"eu-west-1":      "m4",
+		"eu-west-2":      "m4",
+		"eu-west-3":      "m5",
+		"sa-east-1":      "m4",
+		"us-east-1":      "m4",
+		"us-east-2":      "m4",
+		"us-gov-east-1":  "m5",
+		"us-gov-west-1":  "m4",
+		"us-west-1":      "m4",
+		"us-west-2":      "m4",
+	}
+)
 
 // Name returns a human friendly name for the Master Asset.
 func (m *Master) Name() string {
@@ -49,6 +73,17 @@ func (m *Master) Dependencies() []asset.Asset {
 		new(rhcos.Image),
 		&machine.Master{},
 	}
+}
+
+func awsDefaultMachineClass(installconfig *installconfig.InstallConfig) string {
+	region := installconfig.Config.Platform.AWS.Region
+	if class, ok := defaultMachineClass[region]; ok {
+		return class
+	}
+	return "m4"
+}
+func awsDefaultMasterMachineType(installconfig *installconfig.InstallConfig) string {
+	return fmt.Sprintf("%s.xlarge", awsDefaultMachineClass(installconfig))
 }
 
 // Generate generates the Master asset.
@@ -71,7 +106,7 @@ func (m *Master) Generate(dependencies asset.Parents) error {
 	switch ic.Platform.Name() {
 	case awstypes.Name:
 		mpool := defaultAWSMachinePoolPlatform()
-		mpool.InstanceType = "m4.xlarge"
+		mpool.InstanceType = awsDefaultMasterMachineType(installconfig)
 		mpool.Set(ic.Platform.AWS.DefaultMachinePlatform)
 		mpool.Set(pool.Platform.AWS)
 		if len(mpool.Zones) == 0 {

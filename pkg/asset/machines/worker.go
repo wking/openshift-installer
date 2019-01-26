@@ -72,6 +72,10 @@ func (w *Worker) Dependencies() []asset.Asset {
 	}
 }
 
+func awsDefaultWorkerMachineType(installconfig *installconfig.InstallConfig) string {
+	return fmt.Sprintf("%s.large", awsDefaultMachineClass(installconfig))
+}
+
 // Generate generates the Worker asset.
 func (w *Worker) Generate(dependencies asset.Parents) error {
 	clusterID := &installconfig.ClusterID{}
@@ -92,7 +96,7 @@ func (w *Worker) Generate(dependencies asset.Parents) error {
 	switch ic.Platform.Name() {
 	case awstypes.Name:
 		mpool := defaultAWSMachinePoolPlatform()
-		mpool.InstanceType = "m4.large"
+		mpool.InstanceType = awsDefaultWorkerMachineType(installconfig)
 		mpool.Set(ic.Platform.AWS.DefaultMachinePlatform)
 		mpool.Set(pool.Platform.AWS)
 		if len(mpool.Zones) == 0 {
