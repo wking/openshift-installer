@@ -14,6 +14,7 @@ module "bootstrap" {
   source = "./bootstrap"
 
   ami                      = "${var.aws_ec2_ami_override}"
+  instance_type            = "${var.aws_bootstrap_instance_type}"
   cluster_name             = "${var.cluster_name}"
   iam_role                 = "${var.aws_master_iam_role_name}"
   ignition                 = "${var.ignition_bootstrap}"
@@ -25,6 +26,7 @@ module "bootstrap" {
 
   tags = "${merge(map(
       "Name", "${var.cluster_name}-bootstrap",
+      "kubernetes.io/cluster/${var.cluster_name}", "owned",
     ), local.tags)}"
 }
 

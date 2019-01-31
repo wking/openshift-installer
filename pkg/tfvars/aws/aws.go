@@ -7,6 +7,7 @@ type AWS struct {
 	Master         `json:",inline"`
 	Region         string `json:"aws_region,omitempty"`
 	Worker         `json:",inline"`
+	Bootstrap      `json:",inline"`
 }
 
 // Master converts master related config.
@@ -26,4 +27,9 @@ type MasterRootVolume struct {
 // Worker converts worker related config.
 type Worker struct {
 	IAMRoleName string `json:"aws_worker_iam_role_name,omitempty"`
+}
+
+// Bootstrap converts bootstrap related config.
+type Bootstrap struct {
+	InstanceType string `json:"aws_bootstrap_instance_type,omitempty"`
 }

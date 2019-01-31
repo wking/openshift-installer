@@ -10,9 +10,6 @@ EOF
 variable "aws_master_ec2_type" {
   type        = "string"
   description = "Instance size for the master node(s). Example: `m4.large`."
-
-  # FIXME: get this wired up to the machine default
-  default = "m4.xlarge"
 }
 
 variable "aws_ec2_ami_override" {
@@ -86,4 +83,9 @@ Example:
  * Role ARN  = arn:aws:iam::123456789012:role/openshift-installer
  * Role Name = openshift-installer
 EOF
+}
+
+variable "aws_bootstrap_instance_type" {
+  type        = "string"
+  description = "Instance size for the bootstrap node. Example: `m4.large`."
 }

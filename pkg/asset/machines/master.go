@@ -51,6 +51,11 @@ func (m *Master) Dependencies() []asset.Asset {
 	}
 }
 
+func awsDefaultMasterMachineType(installconfig *installconfig.InstallConfig) string {
+	instanceClass := installconfig.Config.Platform.AWS.GetDefaultInstanceClass()
+	return fmt.Sprintf("%s.xlarge", instanceClass)
+}
+
 // Generate generates the Master asset.
 func (m *Master) Generate(dependencies asset.Parents) error {
 	clusterID := &installconfig.ClusterID{}
@@ -71,7 +76,7 @@ func (m *Master) Generate(dependencies asset.Parents) error {
 	switch ic.Platform.Name() {
 	case awstypes.Name:
 		mpool := defaultAWSMachinePoolPlatform()
-		mpool.InstanceType = "m4.xlarge"
+		mpool.InstanceType = awsDefaultMasterMachineType(installconfig)
 		mpool.Set(ic.Platform.AWS.DefaultMachinePlatform)
 		mpool.Set(pool.Platform.AWS)
 		if len(mpool.Zones) == 0 {

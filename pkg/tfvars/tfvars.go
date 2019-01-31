@@ -3,6 +3,7 @@ package tfvars
 
 import (
 	"encoding/json"
+	"fmt"
 
 	"github.com/openshift/installer/pkg/tfvars/aws"
 	"github.com/openshift/installer/pkg/tfvars/libvirt"
@@ -76,6 +77,8 @@ func TFVars(clusterID string, cfg *types.InstallConfig, osImage, bootstrapIgn, m
 		config.AWS.Region = cfg.Platform.AWS.Region
 		config.AWS.ExtraTags = cfg.Platform.AWS.UserTags
 		config.AWS.EC2AMIOverride = osImage
+		instanceClass := cfg.Platform.AWS.GetDefaultInstanceClass()
+		config.AWS.Bootstrap.InstanceType = fmt.Sprintf("%s.large", instanceClass)
 	} else if cfg.Platform.Libvirt != nil {
 		masterIPs := make([]string, len(cfg.Platform.Libvirt.MasterIPs))
 		for i, ip := range cfg.Platform.Libvirt.MasterIPs {

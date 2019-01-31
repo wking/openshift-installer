@@ -19,12 +19,6 @@ variable "ignition" {
   description = "The content of the bootstrap ignition file."
 }
 
-variable "instance_type" {
-  type        = "string"
-  default     = "m4.large"
-  description = "The EC2 instance type for the bootstrap node."
-}
-
 variable "subnet_id" {
   type        = "string"
   description = "The subnet ID for the bootstrap node."
@@ -44,6 +38,11 @@ variable "target_group_arns" {
 
 variable "target_group_arns_length" {
   description = "The length of the 'target_group_arns' variable, to work around https://github.com/hashicorp/terraform/issues/12570."
+}
+
+variable "instance_type" {
+  type        = "string"
+  description = "The instance type of the bootstrap node"
 }
 
 variable "volume_iops" {
