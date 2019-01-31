@@ -29,6 +29,7 @@ module "bootstrap" {
   ami            = "ami-0af8953af3ec06b7c"
   cluster_name   = "my-cluster"
   ignition       = "{\"ignition\": {\"version\": \"2.2.0\"}}",
+  instance_type  = "i3.large"
   subnet_id      = "${aws_subnet.example.id}"
   vpc_id         = "${aws_vpc.example.id}"
 }

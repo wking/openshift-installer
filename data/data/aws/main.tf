@@ -17,6 +17,7 @@ module "bootstrap" {
   cluster_name             = "${var.cluster_name}"
   iam_role                 = "${var.aws_master_iam_role_name}"
   ignition                 = "${var.ignition_bootstrap}"
+  instance_type            = "${var.aws_bootstrap_ec2_type}"
   subnet_id                = "${module.vpc.master_subnet_ids[0]}"
   target_group_arns        = "${module.vpc.aws_lb_target_group_arns}"
   target_group_arns_length = "${module.vpc.aws_lb_target_group_arns_length}"

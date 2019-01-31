@@ -2,11 +2,12 @@ package aws
 
 // AWS converts AWS related config.
 type AWS struct {
-	EC2AMIOverride string            `json:"aws_ec2_ami_override,omitempty"`
-	ExtraTags      map[string]string `json:"aws_extra_tags,omitempty"`
-	Master         `json:",inline"`
-	Region         string `json:"aws_region,omitempty"`
-	Worker         `json:",inline"`
+	EC2AMIOverride   string            `json:"aws_ec2_ami_override,omitempty"`
+	ExtraTags        map[string]string `json:"aws_extra_tags,omitempty"`
+	BootstrapEC2Type string            `json:"aws_bootstrap_ec2_type,omitempty"`
+	Master           `json:",inline"`
+	Region           string `json:"aws_region,omitempty"`
+	Worker           `json:",inline"`
 }
 
 // Master converts master related config.

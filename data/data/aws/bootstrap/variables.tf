@@ -21,7 +21,6 @@ variable "ignition" {
 
 variable "instance_type" {
   type        = "string"
-  default     = "i3.large"
   description = "The EC2 instance type for the bootstrap node."
 }
 
