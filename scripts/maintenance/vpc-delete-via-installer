@@ -1,0 +1,25 @@
+#!/bin/sh
+
+mkdir -p destroy &&
+aws ec2 describe-vpcs | jq -c '.Vpcs[] | .Tags | select(. != null) | from_entries | select(.expirationDate != null and now - (.expirationDate | strptime("%Y-%m-%dT%H:%M+0000") | mktime) > 0) | ."name" = (keys[] | select(. | startswith("kubernetes.io/cluster/")) | sub("^kubernetes.io/cluster/"; ""))' | while read VPC
+do
+	CLUSTER_ID="$(echo "${VPC}" | jq -r .openshiftClusterID)" &&
+	NAME="$(echo "${VPC}" | jq -r .name)" &&
+	cat >destroy/metadata.json <<-EOF &&
+		{
+		  "aws": {
+		    "region": "us-east-1",
+		    "identifier": [
+		      {
+		        "openshiftClusterID": "${CLUSTER_ID}"
+		      },
+		      {
+		        "kubernetes.io/cluster/${NAME}": "owned"
+		      }
+		    ]
+		  }
+		}
+		EOF
+	echo "destroy ${VPC}" &&
+	openshift-install --dir=destroy destroy cluster
+done
