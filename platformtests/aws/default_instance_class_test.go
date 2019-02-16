@@ -5,23 +5,27 @@ import (
 	"testing"
 
 	"github.com/aws/aws-sdk-go/aws"
+	"github.com/aws/aws-sdk-go/aws/credentials"
+	"github.com/aws/aws-sdk-go/aws/session"
 	"github.com/aws/aws-sdk-go/service/pricing"
-	awsutil "github.com/openshift/installer/pkg/asset/installconfig/aws"
 	"github.com/openshift/installer/pkg/types/aws/defaults"
 	"github.com/openshift/installer/pkg/types/aws/validation"
 	"github.com/stretchr/testify/assert"
 )
 
 func TestGetDefaultInstanceClass(t *testing.T) {
-	ssn, err := awsutil.GetSession()
+	ssn, err := session.NewSession(&aws.Config{
+		Credentials: credentials.AnonymousCredentials,
+		Region: aws.String("us-east-1"),
+	})
 	if err != nil {
 		t.Fatal(err)
 	}
 
+	client := pricing.New(ssn)
+
 	exists := struct{}{}
 	instanceClasses := map[string]map[string]struct{}{}
-
-	client := pricing.New(ssn, aws.NewConfig().WithRegion("us-east-1"))
 
 	err = client.GetProductsPages(
 		&pricing.GetProductsInput{
