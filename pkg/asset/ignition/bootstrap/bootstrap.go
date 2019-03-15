@@ -36,23 +36,16 @@ const (
 )
 
 var (
-	// defaultReleaseImageOriginal is the value served when defaultReleaseImagePadded is unmodified.
-	defaultReleaseImageOriginal = "registry.svc.ci.openshift.org/openshift/origin-release:v4.0"
-	defaultReleaseImagePrefix   = ""
 	// defaultReleaseImagePadded may be replaced in the binary with a pull spec that overrides defaultReleaseImage as
 	// a null-terminated string within the allowed character length. This allows a distributor to override the payload
 	// location without having to rebuild the source.
-	defaultReleaseImagePadded = "_RELEASE_IMAGE_LOCATION_XXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXX"
+	defaultReleaseImagePadded = "registry.svc.ci.openshift.org/openshift/origin-release:v4.0\x00XXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXX"
 	defaultReleaseImageLength = len(defaultReleaseImagePadded)
 )
 
 // defaultReleaseImage abstracts how the binary loads the default release payload. We want to lock the binary
 // to the
 func defaultReleaseImage() string {
-	if strings.HasPrefix(defaultReleaseImagePadded, defaultReleaseImagePrefix) {
-		logrus.Debug("Using default location for release image")
-		return defaultReleaseImageOriginal
-	}
 	nullTerminator := strings.IndexByte(defaultReleaseImagePadded, '\x00')
 	if nullTerminator == -1 {
 		panic(fmt.Sprintf("Release image location was replaced but without a null terminator before %d bytes", defaultReleaseImageLength))
@@ -61,7 +54,6 @@ func defaultReleaseImage() string {
 		panic("Release image location contains no null-terminator and constant is corrupted")
 	}
 	pullspec := defaultReleaseImagePadded[:nullTerminator]
-	logrus.Debugf("Using locked internal constant for release image %s", pullspec)
 	return pullspec
 }
 
@@ -200,12 +192,14 @@ func (a *Bootstrap) getTemplateData(installConfig *types.InstallConfig) (*bootst
 		etcdEndpoints[i] = fmt.Sprintf("https://etcd-%d.%s:2379", i, installConfig.ClusterDomain())
 	}
 
-	releaseImage := defaultReleaseImage()
+	var releaseImage string
 	if ri, ok := os.LookupEnv("OPENSHIFT_INSTALL_RELEASE_IMAGE_OVERRIDE"); ok && ri != "" {
 		logrus.Warn("Found override for ReleaseImage. Please be warned, this is not advised")
 		releaseImage = ri
+	} else {
+		releaseImage = defaultReleaseImage()
+		logrus.Debugf("Using internal constant for release image: %s", releaseImage)
 	}
-
 	return &bootstrapTemplateData{
 		EtcdCertSignerImage: etcdCertSignerImage,
 		PullSecret:          installConfig.PullSecret,
