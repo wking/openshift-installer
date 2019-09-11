@@ -722,7 +722,7 @@ func terminateEC2InstancesByTags(ec2Client *ec2.EC2, iamClient *iam.IAM, filters
 								if *instance.State.Name == "terminated" {
 									arn := fmt.Sprintf("arn:aws:ec2:%s:%s:instance/%s", *ec2Client.Config.Region, *reservation.OwnerId, *instance.InstanceId)
 									if _, ok := terminated[arn]; !ok {
-										instanceLogger.Debug("Terminated")
+										instanceLogger.Info("Terminated")
 										terminated[arn] = exists
 									}
 									continue
