@@ -73,7 +73,7 @@ func getValidOptionalInstallConfig() *agent.OptionalInstallConfig {
 					ServiceNetwork: []ipnet.IPNet{
 						*ipnet.MustParseCIDR("172.30.0.0/16"),
 					},
-					NetworkType: "OVNKubernetes",
+					NetworkType: "OpenShiftNetworking",
 				},
 				Platform: types.Platform{
 					BareMetal: &baremetal.Platform{
@@ -374,7 +374,7 @@ func getGoodACI() *hiveext.AgentClusterInstall {
 					},
 				},
 				ServiceNetwork: []string{"172.30.0.0/16"},
-				NetworkType:    "OVNKubernetes",
+				NetworkType:    "OpenShiftNetworking",
 			},
 			SSHPublicKey: strings.Trim(TestSSHKey, "|\n\t"),
 			ProvisionRequirements: hiveext.ProvisionRequirements{

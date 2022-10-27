@@ -105,7 +105,7 @@ func TestAgentClusterInstall_Generate(t *testing.T) {
 							},
 						},
 						ServiceNetwork: []string{"172.30.0.0/16", "fd02::/112"},
-						NetworkType:    "OVNKubernetes",
+						NetworkType:    "OpenShiftNetworking",
 					},
 					SSHPublicKey: strings.Trim(TestSSHKey, "|\n\t"),
 					ProvisionRequirements: hiveext.ProvisionRequirements{
@@ -150,7 +150,7 @@ func TestAgentClusterInstall_Generate(t *testing.T) {
 func TestAgentClusterInstall_LoadedFromDisk(t *testing.T) {
 
 	emptyACI := &hiveext.AgentClusterInstall{}
-	emptyACI.Spec.Networking.NetworkType = "OVNKubernetes"
+	emptyACI.Spec.Networking.NetworkType = "OpenShiftNetworking"
 
 	cases := []struct {
 		name           string
@@ -182,7 +182,7 @@ spec:
       hostPrefix: 23
     serviceNetwork:
     - 172.30.0.0/16
-    networkType: OVNKubernetes
+    networkType: OpenShiftNetworking
   provisionRequirements:
     controlPlaneAgents: 3
     workerAgents: 2
@@ -219,7 +219,7 @@ spec:
 						ServiceNetwork: []string{
 							"172.30.0.0/16",
 						},
-						NetworkType: "OVNKubernetes",
+						NetworkType: "OpenShiftNetworking",
 					},
 					ProvisionRequirements: hiveext.ProvisionRequirements{
 						ControlPlaneAgents: 3,
@@ -292,7 +292,7 @@ spec:
 			expectedError: "",
 		},
 		{
-			name: "valid-config-file-no-network-type-specified-and-defaults-to-OVNKubernetes",
+			name: "valid-config-file-no-network-type-specified-and-defaults-to-OpenShiftNetworking",
 			data: `
 metadata:
   name: test-agent-cluster-install
@@ -347,7 +347,7 @@ spec:
 						ServiceNetwork: []string{
 							"172.30.0.0/16",
 						},
-						NetworkType: "OVNKubernetes",
+						NetworkType: "OpenShiftNetworking",
 					},
 					ProvisionRequirements: hiveext.ProvisionRequirements{
 						ControlPlaneAgents: 3,
@@ -425,7 +425,7 @@ spec:
 							"172.30.0.0/16",
 							"fd02::/112",
 						},
-						NetworkType: "OVNKubernetes",
+						NetworkType: "OpenShiftNetworking",
 					},
 					ProvisionRequirements: hiveext.ProvisionRequirements{
 						ControlPlaneAgents: 3,
@@ -516,7 +516,7 @@ spec:
       hostPrefix: 23
     serviceNetwork:
     - 172.30.0.0/16
-    networkType: OVNKubernetes
+    networkType: OpenShiftNetworking
   provisionRequirements:
     controlPlaneAgents: 3
     workerAgents: 2

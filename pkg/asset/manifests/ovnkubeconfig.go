@@ -9,7 +9,7 @@ import (
 	operatorv1 "github.com/openshift/api/operator/v1"
 )
 
-// OvnKubeConfig creates a config file for the OVNKubernetes CNI provider
+// OvnKubeConfig creates a config file for the OpenShiftNetworking CNI provider
 func OvnKubeConfig(cns []configv1.ClusterNetworkEntry, sn []string, useHostRouting bool) ([]byte, error) {
 
 	operCNs := []operatorv1.ClusterNetworkEntry{}
@@ -33,8 +33,8 @@ func OvnKubeConfig(cns []configv1.ClusterNetworkEntry, sn []string, useHostRouti
 			ClusterNetwork: operCNs,
 			ServiceNetwork: sn,
 			DefaultNetwork: operatorv1.DefaultNetworkDefinition{
-				Type: operatorv1.NetworkTypeOVNKubernetes,
-				OVNKubernetesConfig: &operatorv1.OVNKubernetesConfig{
+				Type: operatorv1.NetworkTypeOpenShiftNetworking,
+				OpenShiftNetworkingConfig: &operatorv1.OpenShiftNetworkingConfig{
 					GatewayConfig: &operatorv1.GatewayConfig{
 						RoutingViaHost: useHostRouting,
 					},

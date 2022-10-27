@@ -1521,9 +1521,9 @@ spec:
                   type: object
                 type: array
               networkType:
-                default: OVNKubernetes
+                default: OpenShiftNetworking
                 description: NetworkType is the type of network to install. The default
-                  value is OVNKubernetes.
+                  value is OpenShiftNetworking.
                 type: string
               serviceCIDR:
                 description: Deprecated way to configure an IP address pool for services.

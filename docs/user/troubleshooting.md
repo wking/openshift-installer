@@ -464,7 +464,7 @@ spec:
   clusterNetwork:
   - cidr: 10.128.0.0/14
     hostPrefix: 23
-  networkType: OVNKubernetes
+  networkType: OpenShiftNetworking
 ```
 
 If it doesn't exist, the installer didn't create it. You'll have to run `openshift-install create manifests` to determine why.

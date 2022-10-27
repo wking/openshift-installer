@@ -113,7 +113,7 @@ metadata:
   name: test-cluster
 baseDomain: test-domain
 networking:
-  networkType: OVNKubernetes
+  networkType: OpenShiftNetworking
 compute:
   - architecture: amd64
     hyperthreading: Enabled
@@ -141,7 +141,7 @@ metadata:
   name: test-cluster
 baseDomain: test-domain
 networking:
-  networkType: OVNKubernetes
+  networkType: OpenShiftNetworking
 controlPlane:
   architecture: amd64
   hyperthreading: Enabled
@@ -181,7 +181,7 @@ platform:
 pullSecret: "{\"auths\":{\"example.com\":{\"auth\":\"authorization value\"}}}"
 `,
 			expectedFound: false,
-			expectedError: "invalid install-config configuration: Networking.NetworkType: Invalid value: \"OpenShiftSDN\": Only OVNKubernetes network type is allowed for Single Node OpenShift (SNO) cluster",
+			expectedError: "invalid install-config configuration: Networking.NetworkType: Invalid value: \"OpenShiftSDN\": Only OpenShiftNetworking network type is allowed for Single Node OpenShift (SNO) cluster",
 		},
 		{
 			name: "invalid platform for SNO cluster",
@@ -220,7 +220,7 @@ metadata:
   name: test-cluster
 baseDomain: test-domain
 networking:
-  networkType: OVNKubernetes
+  networkType: OpenShiftNetworking
 compute:
   - architecture: amd64
     hyperthreading: Enabled
@@ -251,7 +251,7 @@ pullSecret: "{\"auths\":{\"example.com\":{\"auth\":\"authorization value\"}}}"
 					MachineNetwork: []types.MachineNetworkEntry{
 						{CIDR: *ipnet.MustParseCIDR("10.0.0.0/16")},
 					},
-					NetworkType:    "OVNKubernetes",
+					NetworkType:    "OpenShiftNetworking",
 					ServiceNetwork: []ipnet.IPNet{*ipnet.MustParseCIDR("172.30.0.0/16")},
 					ClusterNetwork: []types.ClusterNetworkEntry{
 						{

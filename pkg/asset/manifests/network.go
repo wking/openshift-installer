@@ -60,6 +60,9 @@ func (no *Networking) Generate(dependencies asset.Parents) error {
 	dependencies.Get(installConfig, crds)
 
 	netConfig := installConfig.Config.Networking
+	if netConfig.NetworkType == "OpenShiftNetworking" {
+		netConfig.NetworkType = string(operv1.NetworkTypeOVNKubernetes)
+	}
 
 	clusterNet := []configv1.ClusterNetworkEntry{}
 	if len(netConfig.ClusterNetwork) > 0 {
@@ -121,7 +124,7 @@ func (no *Networking) Generate(dependencies asset.Parents) error {
 
 	switch installConfig.Config.Platform.Name() {
 	case powervs.Name:
-		if netConfig.NetworkType == "OVNKubernetes" {
+		if netConfig.NetworkType == "OpenShiftNetworking" {
 			ovnConfig, err := OvnKubeConfig(clusterNet, serviceNet, true)
 			if err != nil {
 				return errors.Wrapf(err, "cannot marshal Power VS OVNKube Config")

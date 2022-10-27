@@ -2,7 +2,7 @@
 
 ### Post OpenShift 4.12 releases 
 
-The default network type (CNI plugin) is OVNKubernetes for OpenShift v4.12. Prior to OpenShift v4.12, the default network type was OpenShiftSDN. OpenShiftSDN supports IPv4 only. For IPv6 or dual stack, a compatible NetworkType like OVNKubernetes must be used.
+The default network type (CNI plugin) is OpenShiftNetworking for OpenShift v4.12. Prior to OpenShift v4.12, the default network type was OpenShiftSDN. OpenShiftSDN supports IPv4 only. For IPv6 or dual stack, a compatible NetworkType like OpenShiftNetworking must be used.
 
 If you are using the install-config and agent-config yamls to generate the ZTP manifests that feeds into the agent ISO, the Network Type is set in install-config.yaml under Networking.NetworkType [https://docs.openshift.com/container-platform/4.11/installing/installing_bare_metal/installing-bare-metal-network-customizations.html]
 

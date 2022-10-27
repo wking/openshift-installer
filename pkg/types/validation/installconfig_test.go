@@ -184,7 +184,7 @@ func validNutanixPlatform() *nutanix.Platform {
 
 func validIPv4NetworkingConfig() *types.Networking {
 	return &types.Networking{
-		NetworkType: "OVNKubernetes",
+		NetworkType: "OpenShiftNetworking",
 		MachineNetwork: []types.MachineNetworkEntry{
 			{
 				CIDR: *ipnet.MustParseCIDR("10.0.0.0/16"),
@@ -204,7 +204,7 @@ func validIPv4NetworkingConfig() *types.Networking {
 
 func validIPv6NetworkingConfig() *types.Networking {
 	return &types.Networking{
-		NetworkType: "OVNKubernetes",
+		NetworkType: "OpenShiftNetworking",
 		MachineNetwork: []types.MachineNetworkEntry{
 			{
 				CIDR: *ipnet.MustParseCIDR("ffd0::/48"),
@@ -224,7 +224,7 @@ func validIPv6NetworkingConfig() *types.Networking {
 
 func validDualStackNetworkingConfig() *types.Networking {
 	return &types.Networking{
-		NetworkType: "OVNKubernetes",
+		NetworkType: "OpenShiftNetworking",
 		MachineNetwork: []types.MachineNetworkEntry{
 			{
 				CIDR: *ipnet.MustParseCIDR("10.0.0.0/16"),
@@ -459,7 +459,7 @@ func TestValidateInstallConfig(t *testing.T) {
 			name: "cluster network host prefix unset",
 			installConfig: func() *types.InstallConfig {
 				c := validInstallConfig()
-				c.Networking.NetworkType = "OVNKubernetes"
+				c.Networking.NetworkType = "OpenShiftNetworking"
 				c.Networking.ClusterNetwork[0].CIDR = *ipnet.MustParseCIDR("192.168.1.0/24")
 				c.Networking.ClusterNetwork[0].HostPrefix = 0
 				return c

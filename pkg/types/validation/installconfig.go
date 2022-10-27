@@ -51,7 +51,7 @@ import (
 )
 
 // list of known plugins that require hostPrefix to be set
-var pluginsUsingHostPrefix = sets.NewString(string(operv1.NetworkTypeOpenShiftSDN), string(operv1.NetworkTypeOVNKubernetes))
+var pluginsUsingHostPrefix = sets.NewString(string(operv1.NetworkTypeOpenShiftSDN), "OpenShiftNetworking")
 
 // ValidateInstallConfig checks that the specified install config is valid.
 func ValidateInstallConfig(c *types.InstallConfig) field.ErrorList {

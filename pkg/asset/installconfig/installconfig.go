@@ -177,6 +177,10 @@ func (a *InstallConfig) finish(filename string) error {
 		a.PowerVS = icpowervs.NewMetadata(a.Config.BaseDomain)
 	}
 
+	if a.Config.Networking.NetworkType == "OVNKubernetes" {
+		a.Config.Networking.NetworkType = "OpenShiftNetworking"
+	}
+
 	if err := validation.ValidateInstallConfig(a.Config).ToAggregate(); err != nil {
 		if filename == "" {
 			return errors.Wrap(err, "invalid install config")

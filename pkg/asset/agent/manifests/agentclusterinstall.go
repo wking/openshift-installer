@@ -199,7 +199,7 @@ func (a *AgentClusterInstall) finish() error {
 	return nil
 }
 
-// Sets the default network type to OVNKubernetes if it is unspecified in the
+// Sets the default network type to OpenShiftNetworking if it is unspecified in the
 // AgentClusterInstall or InstallConfig
 func setNetworkType(aci *hiveext.AgentClusterInstall, installConfig *types.InstallConfig,
 	warningMessage string) {
